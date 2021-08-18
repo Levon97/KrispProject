@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./app.js",
-    "dev": "nodemon ./app.js"
+    "start": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js"
   },
   "author": "Levon97",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "express": "^4.17.1",
     "joi": "^17.4.2",
     "mysql2": "^2.3.0",
+    "redis": "^3.1.2",
     "sequelize": "^6.6.5"
   }
 }

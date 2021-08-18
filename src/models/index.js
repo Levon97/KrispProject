@@ -14,12 +14,5 @@ const sequelize = new Sequelize(dbConfigs.DB, dbConfigs.USER, dbConfigs.PASSWORD
   }
 });
 
-const db = {};
-
-// db.sequelize = sequelize;
-// db.Sequelize = Sequelize;
-
-db.User = userModel(sequelize,Sequelize);
-
-module.exports = db;
+module.exports = userModel(sequelize,Sequelize);
 

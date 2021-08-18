@@ -1,9 +1,16 @@
-const {User} = require('../models/index')
+const User = require('../models/index')
 const bcrypt = require('bcrypt');
-const {registrationValidation,loginValidation} = require('../validations/inputDataValidation');
+const registrationValidation= require('../validations/inputDataValidation');
+const crypto = require('crypto')
+
+function generateToken() {
+ return crypto.randomBytes(48).toString('base64');
+}
+const gene = generateToken()
+
+console.log(gago);
 
 async function registration(req,res){ 
-    const inputData = await req.body;
 
     // checking inputed data for registration valide or not
     const { error } = registrationValidation(req.body);
@@ -36,4 +43,14 @@ async function registration(req,res){
 
 module.exports = {
     registration
+}
+
+async function logIn(req,res) {
+    // checking is there a user with inputed email
+    const user = await User.findOne({ where: { email: req.body.email } });
+    if(!user)return res.status(401).json({error: "wrong Email"});
+    
+    const validPassword = await bcrypt.compare(req.body.password, user.password)
+    if(!validPassword) return res.status(401).json({error: 'Wrong password'});
+
 }

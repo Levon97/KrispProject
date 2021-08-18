@@ -15,18 +15,4 @@ function registrationValidation(data) {
     return schema.validate(data);
 }
 
-// checking email  validation  when logining
-function loginValidation(data) {
-
-    const schema = Joi.object({
-        email: Joi.string().min(6).max(30).required().email()
-    });
-
-
-    return schema.validate(data);
-}
-
-module.exports = {
-    registrationValidation,
-    loginValidation
-}
+module.exports = registrationValidation;
