@@ -1,14 +1,7 @@
 const User = require('../models/index')
 const bcrypt = require('bcrypt');
 const registrationValidation= require('../validations/inputDataValidation');
-const crypto = require('crypto')
-
-function generateToken() {
- return crypto.randomBytes(48).toString('base64');
-}
-const gene = generateToken()
-
-console.log(gago);
+const tokenCreator = require('../helpers/util');
 
 async function registration(req,res){ 
 
@@ -41,10 +34,6 @@ async function registration(req,res){
     }
 }
 
-module.exports = {
-    registration
-}
-
 async function logIn(req,res) {
     // checking is there a user with inputed email
     const user = await User.findOne({ where: { email: req.body.email } });
@@ -52,5 +41,22 @@ async function logIn(req,res) {
     
     const validPassword = await bcrypt.compare(req.body.password, user.password)
     if(!validPassword) return res.status(401).json({error: 'Wrong password'});
+    
+    try {
+        const token = await tokenCreator(48);
+        res.header("auth-token", token).json({
+            error: null,
+            data: {
+                token,
+            },
+        });
+    } catch (error) {
+        res.status(400).json({ error });
+        console.log(error)
+    }
+    
+}
 
+module.exports = {
+    registration,logIn
 }
