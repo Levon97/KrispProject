@@ -1,8 +1,7 @@
-const dbConfigs = require('../configs/db.configs');
+const dbConfigs = require('../config/db.configs');
 const Sequelize = require("sequelize");
-const userModel = require('./userModel');
-
-// DB configurations woth Sequelize 
+const userModel = require('./user')
+// DB configurations with Sequelize 
 const sequelize = new Sequelize(dbConfigs.DB, dbConfigs.USER, dbConfigs.PASSWORD, {
     host: dbConfigs.HOST,
     dialect: dbConfigs.dialect,
@@ -17,8 +16,10 @@ const sequelize = new Sequelize(dbConfigs.DB, dbConfigs.USER, dbConfigs.PASSWORD
 
 const db = {};
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
-db.user = userModel(sequelize,Sequelize);
+// db.sequelize = sequelize;
+// db.Sequelize = Sequelize;
+
+db.User = userModel(sequelize,Sequelize);
 
 module.exports = db;
+
