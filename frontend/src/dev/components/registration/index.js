@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// changeing male female  to m and f
 function  sexGen(sex){
     console.log(sex)
     switch (sex){
@@ -12,18 +13,9 @@ function  sexGen(sex){
     }
 
 }
+// registration component
 function Registration() {
     const [inputField, setInputFieldVal] = useState({});
-    const  handleSubmit = async () => {
-        const res = await fetch("http://localhost:3001/registration",{
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                },
-            body: JSON.stringify(inputField)
-        })
-        console.log(res);
-    };
     const changeHandler = (e) => {
         const { name, value } = e.target;
         if (name === 'sex') {
@@ -33,6 +25,17 @@ function Registration() {
         
     }
     console.log(inputField);
+    
+    // function to send post request regisdtration
+    const  handleSubmit = async () => {
+        const res = await fetch("http://localhost:3001/registration",{
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                },
+            body: JSON.stringify(inputField)
+        })
+    };
     return (
     <div>
         <input onChange={(e) => changeHandler(e)} name='name' />
@@ -45,7 +48,7 @@ function Registration() {
             <option>female</option>
         </select>
         <input type='date' onChange={(e) => changeHandler(e)} name='birth' />
-        <button onClick = {()=>handleSubmit()}>submit</button>
+        <button onClick = {()=>handleSubmit()}>registration</button>
     </div>)
 }
 
