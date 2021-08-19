@@ -2,6 +2,7 @@ const User = require('../models/index')
 const bcrypt = require('bcrypt');
 const registrationValidation= require('../validations/inputDataValidation');
 const tokenCreator = require('../helpers/util');
+const client = require('../helpers/redisConnection');
 
 async function registration(req,res){ 
 
@@ -44,6 +45,7 @@ async function logIn(req,res) {
     
     try {
         const token = await tokenCreator(48);
+        client.set(token, req.body.email, 'EX', 60*60)
         res.header("auth-token", token).json({
             error: null,
             data: {

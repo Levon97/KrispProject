@@ -1,9 +1,11 @@
 require('dotenv').config()
 
 const express = require('express');
+const client = require('./helpers/redisConnection')
 const app = express();
 const logRegRoutes = require ('./routes/logRegRouts')
 const port = process.env.PORT || 3001;
+
 
 app.use(express.json());
 app.use('/',logRegRoutes);
@@ -15,5 +17,7 @@ app.use('/',logRegRoutes);
   } catch (err) {
       console.log(err);
   }
+
+  
 
 
