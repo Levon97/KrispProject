@@ -1,12 +1,13 @@
 import Login from "./components/login.js";
 import Registration from "./components/registration.js";
+import Home from "./conteiners/home.js";
+import Profile from "./conteiners/profile.js";
 import {
     BrowserRouter as Router,
     Switch,
     Route
   } from "react-router-dom";
-import Home from "./conteiners/home";
-import Profile from "./conteiners/profile";
+
 
 function Wrapper() {
     return (
