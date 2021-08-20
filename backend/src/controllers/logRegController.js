@@ -8,7 +8,7 @@ async function registration(req,res){
 
     // checking inputed data for registration valide or not
     const { error } = registrationValidation(req.body);
-    if (error) return res.status(400).json({ error: error.details});
+    if (error) return res.status(400).json({ error: error.details[0].message});
     
     // checking is there a user with inputed email
     const isEmailExist = await User.findOne({ where: { email: req.body.email } });
@@ -45,7 +45,7 @@ async function logIn(req,res) {
     
     try {
         const token = await tokenCreator(48);
-        client.set(token, req.body.email, 'EX', 60*60)
+        client.set(token, req.body.email, 'EX', 60*60);
         res.header("auth-token", token).json({
             error: null,
             data: {

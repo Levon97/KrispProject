@@ -1,8 +1,10 @@
 const router = require('express').Router();
-const { registration,logIn,profile} = require('../controllers/logRegController');
+const { registration,logIn} = require('../controllers/logRegController');
+const {profile,logOut} = require('../controllers/profileController');
 
 router.post('/registration', registration);
 router.post('/login',logIn);
-// router.get('profile',profile);
+router.post('/profile',profile);
+router.post('/logout',logOut);
 
 module.exports = router;

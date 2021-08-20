@@ -1,5 +1,5 @@
-import Login from "./components/login";
-import Registration from "./components/registration";
+import Login from "./components/login.js";
+import Registration from "./components/registration.js";
 import {
     BrowserRouter as Router,
     Switch,

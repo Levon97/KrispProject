@@ -5,7 +5,4 @@ const client = redis.createClient({
     port: process.env.REDISPORT
 });
 
- client.set("gaggul", "gugo" )
-
-
 module.exports = client;
