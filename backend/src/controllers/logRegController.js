@@ -1,8 +1,8 @@
 const User = require('../models/index')
 const bcrypt = require('bcrypt');
 const registrationValidation= require('../validations/inputDataValidation');
-const tokenCreator = require('../helpers/util');
-const client = require('../helpers/redisConnection');
+const {tokenCreator} = require('../helpers/tokenCreator.js');
+const {redisSet} = require ('../helpers/redisAsync');
 
 async function registration(req,res){ 
 
@@ -12,7 +12,7 @@ async function registration(req,res){
     
     // checking is there a user with inputed email
     const isEmailExist = await User.findOne({ where: { email: req.body.email } });
-    if (isEmailExist) return res.status(409).json({ error: "Email already exists" });
+    if (isEmailExist) return res.status(400).json({ error: "Email already exists" });
 
     const salt = await bcrypt.genSalt(13);
     const password = await bcrypt.hash(req.body.password, salt);
@@ -36,6 +36,8 @@ async function registration(req,res){
 }
 
 async function logIn(req,res) {
+//validastion for required email and pass
+
     // checking is there a user with inputed email
     const user = await User.findOne({ where: { email: req.body.email } });
     if(!user)return res.status(401).json({error: "wrong Email"});
@@ -45,8 +47,8 @@ async function logIn(req,res) {
     
     try {
         const token = await tokenCreator(48);
-        client.set(token, req.body.email, 'EX', 60*60);
-        res.header("auth-token", token).json({
+        await redisSet(token, req.body.email, 'EX', 60*60);  //setAsync
+        res.json({
             error: null,
             data: {
                 token,
@@ -62,3 +64,8 @@ async function logIn(req,res) {
 module.exports = {
     registration,logIn
 }
+
+
+// single handler for succes and errors
+
+// error handling normal 

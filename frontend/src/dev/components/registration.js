@@ -30,7 +30,6 @@ function Registration() {
         setInputFieldVal({...inputField, [name]: sexName || value});
         
     }
-    console.log(inputField);
     
     // function to send post request regisdtration
     async function  handleSubmit() {
@@ -44,7 +43,6 @@ function Registration() {
         })
 
         const data = await res.json();
-        console.log(data, '====DATA')
         if (data.error) {
             return setErrMessage(data.error);
         }
@@ -52,12 +50,12 @@ function Registration() {
     };
     return (
     <div>
-        <input onChange={(e) => changeHandler(e)} name='name' />
-        <input onChange={(e) => changeHandler(e)} name='lastName' />
-        <input type='email' onChange={(e) => changeHandler(e)} name='email' />
-        <input type='password' onChange={(e) => changeHandler(e)} name='password'/>
+        <input placeholder = "Enter name" onChange={(e) => changeHandler(e)} name='name' />
+        <input placeholder = "Enter last name" onChange={(e) => changeHandler(e)} name='lastName' />
+        <input placeholder = "Enter email" type='email' onChange={(e) => changeHandler(e)} name='email' />
+        <input placeholder = "Enter password" type='password' onChange={(e) => changeHandler(e)} name='password'/>
         <select onChange={(e) => changeHandler(e)} name='sex' >
-        <option selected disabled>Choose here</option>
+        <option selected disabled>Select gender</option>
             <option>male</option>
             <option>female</option>
         </select>

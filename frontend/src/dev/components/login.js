@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
 
+// Login component
 function Login() {
     const [inputField,setInputFieldVal] = useState({})
     const [errMessage, setErrMessage] = useState(null);
-    const [disableButton, setDisabledButton] = useState(false)
+    const [disabledButton, setDisabledButton] = useState(false)
     const [loginSuccess, setSuccessfulLogin] = useState(null);
     const changeHandler = (e) => {
         const {name, value} = e.target;
@@ -25,6 +26,7 @@ function Login() {
         const data = await res.json();
         if (data.error) {
             setErrMessage(data.error);
+            setDisabledButton(false);
         } else {
             const authData ={
                 'token': data.data.token,
@@ -32,24 +34,13 @@ function Login() {
             };
         localStorage.setItem('user', JSON.stringify(authData));
         setSuccessfulLogin(true);
-        // const response = await fetch("http://localhost:3001/profile",{
-        //     method: "POST",
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'auth-token': authData.token,
-        //         'user': authData.email
-        //         },
-        // });
-        // const responseData = await response.json();
-        // console.log(responseData, '====DATA');
-        //     // setSuccessfulLogin(true)
         }
     }
     return (
         <div>
-            <input placeholder = "Email" onChange = {(e) => changeHandler(e)} type='mail' name = 'email' />
-            <input onChange = {(e) => changeHandler(e)} type='password' name = 'password' />
-            <button disabled={disableButton} onClick = {handleSubmit}>login</button>
+            <input placeholder = "Enter email" onChange = {(e) => changeHandler(e)} type='mail' name = 'email' />
+            <input placeholder = "Enter password" onChange = {(e) => changeHandler(e)} type='password' name = 'password' />
+            <button disabled={disabledButton} onClick = {handleSubmit}>login</button>
             {
                 errMessage && <p>{errMessage}</p>
             }

@@ -1,24 +1,9 @@
 const User = require('../models/index');
-const client = require('../helpers/redisConnection');
-
-function getCacheById(key) {
-    return new Promise((resv, rej) => {
-      client.get(key, (err, reply) => {
-        resv(reply);
-      });
-    })
-    
-  }
+const { redisDel } = require ('../helpers/redisAsync');
 
 async function profile (req,res) {
    const validToken =  await req.header("auth-token");
    if(!validToken) return res.status(401).json({error: 'Unauthorized'});
-   
-   const email = await req.header("user");
-   if(!email) return res.status(401).json({error: 'Unauthorized'});
-   
-   const redisEmail = await getCacheById(validToken);
-   if(redisEmail !== email) return res.status(401).json({error: 'Unauthorized'});
 
     try {
         const user = await User.findOne({ where: { email: email } });
@@ -32,7 +17,7 @@ async function logOut(req,res){
     const validToken =  await req.header("auth-token");
     
     try {
-        client.del(validToken);
+        redisDel(validToken);
         res.status(200);
     } catch (err) {
         console.log(err);

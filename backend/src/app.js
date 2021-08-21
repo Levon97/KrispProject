@@ -2,18 +2,19 @@ require('dotenv').config()
 
 const express = require('express');
 const cors = require('cors');
-const client = require('./helpers/redisConnection')
 const app = express();
-const logRegRoutes = require ('./routes/logRegRouts')
+const logReg = require ('./routes/logRegRouts');
+const profileLogout = require('./routes/profileLogoutRouts');
 const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(express.json());
-app.use('/',logRegRoutes);
+app.use('/',logReg);
+app.use('/',profileLogout);
 
   try {
       app.listen(port, () => {
-          console.log(`Server is running ${port}`);
+          console.log(`Server is running on ${port}`);
         });
   } catch (err) {
       console.log(err);
