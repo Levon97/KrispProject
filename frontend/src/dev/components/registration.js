@@ -5,6 +5,7 @@ import { Button, Form, Badge } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // registration component
 function Registration() {
+    const current = new Date().toISOString().split("T")[0];
     const [inputField, setInputFieldVal] = useState({});
     const [disabledButton,setDisabledButton] = useState(false);
     const [registrationSucces, setSuccessfulReg] = useState(false);
@@ -89,27 +90,6 @@ function Registration() {
                 registrationSucces && <Redirect to='/login' />
             }
             </>
-    // <div>
-    //     <input placeholder = "Enter name" onChange={(e) => changeHandler(e)} name='name' />
-    //     <input placeholder = "Enter last name" onChange={(e) => changeHandler(e)} name='lastName' />
-    //     <input placeholder = "Enter email" type='email' onChange={(e) => changeHandler(e)} name='email' />
-    //     <input placeholder = "Enter password" type='password' onChange={(e) => changeHandler(e)} name='password'/>
-    //     <input placeholder = "Confirm  password" type='password' onChange={(e) => changeHandler(e)} name='retypePassword'/>
-    //     <select onChange={(e) => changeHandler(e)} name='sex' >
-    //     <option selected disabled>Select gender</option>
-    //         <option>male</option>
-    //         <option>female</option>
-    //         <option>other</option>
-    //     </select>
-    //     <input type='date' onChange={(e) => changeHandler(e)} name='birth' />
-    //     <button disabled = {disabledButton} onClick = {handleSubmit}>registration</button>
-    //     {
-    //         errMessage && <p>{errMessage}</p>
-    //     }
-    //     {
-    //         registrationSucces && <Redirect to='/login' />
-    //     }
-    // </div>
     )
 }
 
