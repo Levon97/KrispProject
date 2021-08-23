@@ -1,0 +1,122 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    position:absolute;
+    width:100px;
+    height:100px;
+    left:50%;
+    top:50%;
+    margin-left:-50px;
+    margin-top:-50px;
+}
+.form-container > div, button {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+}
+.form-container > .mb-3, .form-floating, .btn {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+.form-container > .mb-3, .btn {
+    width: 300px;
+}
+.form-container > .form-floating {
+    width: 300px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    align-items: center;
+}
+.nav-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-items: center;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 50%;
+    top: 50%;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+.nav-bar > a {
+    text-decoration: none;
+    border: 2px solid black;
+    width: 300px;
+    padding: 5px;
+    margin-top: 10px;
+    text-align: center;
+    color: #fff;
+    background-color: #0d6efc;
+    border-color: #0d6efc;
+    border-radius: 5px;
+}
+.nav-bar > a:hover {
+    cursor: pointer;
+}
+body {
+    background-color: #f5f5f5;
+}
+.form-floating>.form-select {
+    padding-top: unset;
+    height: 38px;
+}
+.error-message-registration {
+    text-align: center;
+    font-size: 12px;
+    color: red;
+    position: absolute;
+    width: 100%;
+    left: 4%;
+    top: 29%;
+    margin-left: -50px;
+    margin-top: -50px;
+}
+.profile-section {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    position:absolute;
+    width:100px;
+    height:100px;
+    left:50%;
+    top:50%;
+    margin-left:-50px;
+    margin-top:-50px;
+}
+.profile-section > img {
+    height: 300px;
+    width: 300px;
+    display: flex;
+}
+.button-profile {
+    margin-top: 40px;
+}
+.profile-section > div > p {
+    text-align: center;
+    width: 300px;
+}
+.profile-section > div {
+    margin-top:  -5px;
+}
+.form-container > h4 > span{
+    background: #6595dc !important;
+}
+.form-container > h4 {
+    margin-top: 5px;
+}
+button:hover {
+    cursor: pointer;
+}
+.profile-text {
+    font-size: 20px;
+}

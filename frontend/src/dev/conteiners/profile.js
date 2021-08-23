@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-
+import {Button} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ProfilePic from '../../assets/profile.png'
 function Profile () {
     const [errMessage, setErrMessage] = useState(null)
     const [userData, setUserData] = useState(null);
@@ -8,17 +10,16 @@ function Profile () {
     const [logOut, setlogOut] = useState(null);
     useEffect(() => {
         (async function () {
-            const storageData = await JSON.parse(localStorage.getItem('user'));
+            const storageData = await JSON.parse(localStorage.getItem('auth-token'));
             setAuthData(storageData);
             if (!storageData) {
                 return setErrMessage('Unathorized')
             }
-            const res = await fetch("http://localhost:3001/profile",{
-                method: "POST",
+            const res = await fetch('http://localhost:5000/profile',{
+                method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': storageData.token,
-                    'user': storageData.email
+                    'auth-token': storageData,
                     },
             });
             const data = await res.json();
@@ -28,24 +29,29 @@ function Profile () {
             setUserData(data.data);
         })();
     }, [])
-    const handleLogOut = () => {
-        fetch("http://localhost:3001/logout",{
-                method: "POST",
+    const  handleLogOut = async() => {
+        const res =  await fetch('http://localhost:5000/logout',{
+                method: "GET",
                 headers: {
                     'Content-Type': 'application/json',
-                    'auth-token': authData.token,
+                    'auth-token': authData,
                     },
             });
-        localStorage.removeItem('user');
+
+        localStorage.removeItem('auth-token');
+         const data = await res.json();
+        if(data.error){
+            setErrMessage(data.error);
+        }
         setlogOut(true);
     }
     return (
-        <div>
+        <div className='profile-section'>
+            <img src={ProfilePic} />
             {
                 userData && <div>
-                    <p>{userData.name}</p>
-                    <p>{userData.lastName}</p>
-                    <p>{userData.email}</p>
+                    <p className='profile-text'>{userData.name} {userData.lastName}</p>
+                    
                 </div>
             }
             {
@@ -54,7 +60,7 @@ function Profile () {
             {
                 logOut && <Redirect to='/'/>
             }
-            <button onClick={() => handleLogOut()}>LogOut</button>
+            <Button className='button-profile' onClick={() => handleLogOut()}>Log Out</Button>
         </div>
     )
 }

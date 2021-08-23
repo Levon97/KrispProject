@@ -1,7 +1,7 @@
 const User = require('../models/index')
 const bcrypt = require('bcrypt');
 const registrationValidation= require('../validations/inputDataValidation');
-const {tokenCreator} = require('../helpers/tokenCreator.js');
+const getToken = require('../helpers/tokenCreator.js');
 const {redisSet} = require ('../helpers/redisAsync');
 
 async function registration(req,res){ 
@@ -46,7 +46,7 @@ async function logIn(req,res) {
     if(!validPassword) return res.status(401).json({error: 'Wrong password'});
     
     try {
-        const token = await tokenCreator(48);
+        const token = await getToken(48);
         await redisSet(token, req.body.email, 'EX', 60*60);  //setAsync
         res.json({
             error: null,

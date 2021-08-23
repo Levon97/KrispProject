@@ -7,7 +7,7 @@ import {
     Switch,
     Route
   } from "react-router-dom";
-
+import './style.css'
 
 function Wrapper() {
     return (

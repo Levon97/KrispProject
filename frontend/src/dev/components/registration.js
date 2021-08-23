@@ -1,40 +1,37 @@
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
+import { Button, Form, Badge } from 'react-bootstrap';
 
-// changeing male female  to m and f
-function  sexGen(sex){
-    console.log(sex)
-    switch (sex){
-        case "male":
-            return "m"
-        case "female":
-            return "f"
-        default :
-            return;
-    }
-
-}
+import 'bootstrap/dist/css/bootstrap.min.css';
 // registration component
 function Registration() {
     const [inputField, setInputFieldVal] = useState({});
     const [disabledButton,setDisabledButton] = useState(false);
     const [registrationSucces, setSuccessfulReg] = useState(false);
     const [errMessage, setErrMessage] = useState(null);
+    const [confirmPass, setConfirmPass] = useState(null);
     const changeHandler = (e) => {
         disabledButton && setDisabledButton(false);
         errMessage && setErrMessage(null);
         const { name, value } = e.target;
-        if (name === 'sex') {
-            var sexName = sexGen(value);
+        if (name === "retypePassword") {
+            setConfirmPass(value);
+        } else {
+            if (name === 'sex') {
+                var sexName = value[0];
+            }
+            setInputFieldVal({...inputField, [name]: sexName || value});
         }
-        setInputFieldVal({...inputField, [name]: sexName || value});
         
     }
-    
     // function to send post request regisdtration
     async function  handleSubmit() {
+        if(inputField.password !== confirmPass) {
+            return setErrMessage("password didn't match")
+        }
         setDisabledButton(true)
-        const res = await fetch("http://localhost:3001/registration",{
+        setConfirmPass(null);
+        const res = await fetch(`http://localhost:5000/registration`,{
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -44,30 +41,76 @@ function Registration() {
 
         const data = await res.json();
         if (data.error) {
-            return setErrMessage(data.error);
+            setErrMessage(data.error);
+        } else {
+            setSuccessfulReg(true)
         }
-        return setSuccessfulReg(true)
     };
     return (
-    <div>
-        <input placeholder = "Enter name" onChange={(e) => changeHandler(e)} name='name' />
-        <input placeholder = "Enter last name" onChange={(e) => changeHandler(e)} name='lastName' />
-        <input placeholder = "Enter email" type='email' onChange={(e) => changeHandler(e)} name='email' />
-        <input placeholder = "Enter password" type='password' onChange={(e) => changeHandler(e)} name='password'/>
-        <select onChange={(e) => changeHandler(e)} name='sex' >
-        <option selected disabled>Select gender</option>
-            <option>male</option>
-            <option>female</option>
-        </select>
-        <input type='date' onChange={(e) => changeHandler(e)} name='birth' />
-        <button disabled = {disabledButton} onClick = {handleSubmit}>registration</button>
-        {
-            errMessage && <p>{errMessage}</p>
-        }
-        {
-            registrationSucces && <Redirect to='/login' />
-        }
-    </div>)
+        <>
+        <Form className='form-container'>
+         <h4>
+            <Badge bg="secondary">Please fill the Form</Badge>
+        </h4>
+            <Form.Group className="mb-3">
+                <Form.Control type="text" placeholder="Enter first name" onChange = {(e) => changeHandler(e)} name = 'name' />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control type="text" placeholder="Enter last name " onChange = {(e) => changeHandler(e)} name = 'lastName' />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control type="email" placeholder="Enter email" onChange = {(e) => changeHandler(e)} name = 'email'  />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control type="password" placeholder="Enter password" onChange = {(e) => changeHandler(e)} name = 'password' />
+            </Form.Group>
+            <Form.Group className="mb-3">
+                <Form.Control type="password" placeholder="Confirm password" onChange = {(e) => changeHandler(e)} name = 'retypePassword' />
+            </Form.Group>
+            <Form.FloatingLabel>
+            <Form.Select aria-label="Floating label select example" onChange={(e) => changeHandler(e)} name='sex' >
+                <option>Select gender</option>
+                <option>male</option>
+                <option>female</option>
+                <option>other</option>
+            </Form.Select>
+            </Form.FloatingLabel>
+            <Form.Group className="mb-3">
+                <Form.Control type="date" placeholder="Enter email" onChange = {(e) => changeHandler(e)} name = 'birth' />
+            </Form.Group>
+            <Button disabled = {disabledButton} onClick = {handleSubmit}>
+                Registration
+            </Button>
+        </Form>
+            {
+            errMessage && <p className='error-message-registration'>{errMessage}</p>
+            }
+            {
+                registrationSucces && <Redirect to='/login' />
+            }
+            </>
+    // <div>
+    //     <input placeholder = "Enter name" onChange={(e) => changeHandler(e)} name='name' />
+    //     <input placeholder = "Enter last name" onChange={(e) => changeHandler(e)} name='lastName' />
+    //     <input placeholder = "Enter email" type='email' onChange={(e) => changeHandler(e)} name='email' />
+    //     <input placeholder = "Enter password" type='password' onChange={(e) => changeHandler(e)} name='password'/>
+    //     <input placeholder = "Confirm  password" type='password' onChange={(e) => changeHandler(e)} name='retypePassword'/>
+    //     <select onChange={(e) => changeHandler(e)} name='sex' >
+    //     <option selected disabled>Select gender</option>
+    //         <option>male</option>
+    //         <option>female</option>
+    //         <option>other</option>
+    //     </select>
+    //     <input type='date' onChange={(e) => changeHandler(e)} name='birth' />
+    //     <button disabled = {disabledButton} onClick = {handleSubmit}>registration</button>
+    //     {
+    //         errMessage && <p>{errMessage}</p>
+    //     }
+    //     {
+    //         registrationSucces && <Redirect to='/login' />
+    //     }
+    // </div>
+    )
 }
 
 export default Registration;

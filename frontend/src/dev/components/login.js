@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
-
+import {Button, Form} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 // Login component
 function Login() {
     const [inputField,setInputFieldVal] = useState({})
@@ -16,7 +17,7 @@ function Login() {
     // function to send post request regisdtration
     async function handleSubmit () {
         setDisabledButton(true);
-        const res = await fetch("http://localhost:3001/login",{
+        const res = await fetch(`http://localhost:5000/login`,{
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -28,26 +29,32 @@ function Login() {
             setErrMessage(data.error);
             setDisabledButton(false);
         } else {
-            const authData ={
-                'token': data.data.token,
-                'email': inputField.email
-            };
-        localStorage.setItem('user', JSON.stringify(authData));
+            const authData = data.data.token;
+        localStorage.setItem('auth-token', JSON.stringify(authData));
         setSuccessfulLogin(true);
         }
     }
     return (
-        <div>
-            <input placeholder = "Enter email" onChange = {(e) => changeHandler(e)} type='mail' name = 'email' />
-            <input placeholder = "Enter password" onChange = {(e) => changeHandler(e)} type='password' name = 'password' />
-            <button disabled={disabledButton} onClick = {handleSubmit}>login</button>
+        <Form className='form-container'> 
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control type="email" placeholder="Enter email" onChange = {(e) => changeHandler(e)} name = 'email' />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+                <Form.Label>Password</Form.Label>
+                <Form.Control type="password" placeholder="Password" onChange = {(e) => changeHandler(e)} name = 'password'  />
+            </Form.Group>
+            <Button disabled={disabledButton} onClick = {handleSubmit}>
+                Submit
+            </Button>
             {
-                errMessage && <p>{errMessage}</p>
+                errMessage && <p className={'error-message-registration'}>{errMessage}</p>
             }
             {
                 loginSuccess && <Redirect to="/profile"/>
             }
-        </div>
+        </Form>
     )
 }
 

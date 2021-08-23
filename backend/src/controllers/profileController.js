@@ -2,24 +2,24 @@ const User = require('../models/index');
 const { redisDel } = require ('../helpers/redisAsync');
 
 async function profile (req,res) {
-   const validToken =  await req.header("auth-token");
-   if(!validToken) return res.status(401).json({error: 'Unauthorized'});
+  const email = req.email;
 
-    try {
-        const user = await User.findOne({ where: { email: email } });
+ try {
+        const user = await User.findOne({ where: { email:email } });
         res.status(200).json({ data: user });
     } catch (error) {
-        
+        res.status(401).json({error: "Unauthorized"})
     }
 }
 
 async function logOut(req,res){
-    const validToken =  await req.header("auth-token");
+    const validToken = req.validToken;
     
     try {
-        redisDel(validToken);
-        res.status(200);
+        await redisDel(validToken);
+        res.status(200).json({data: "log out, token deleted"});
     } catch (err) {
+        es.status(400).json({error: "cant log out"})
         console.log(err);
     }
     

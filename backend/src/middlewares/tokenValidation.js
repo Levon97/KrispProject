@@ -1,4 +1,4 @@
-const {redisGet,redisDel} = require('../helpers/redisAsync');
+const {redisGet} = require('../helpers/redisAsync');
 
 // Token validation middleware 
 async function verifyToken(req,res,next) {
@@ -11,6 +11,7 @@ async function verifyToken(req,res,next) {
 
     try {
         req.email = email;
+        req.validToken = validToken;
     next()
     } catch (error) {
         res.status(400).json({ error: "Token is not valid" });
