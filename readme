@@ -1,0 +1,7 @@
+For running this application  you must have Node.js, MySql, redis.
+
+steps to run `
+
+1. run command "npx sequelize-cli db:migrate" from  backend directory:
+2. run command "npm start" from backend directory:
+3. run command "npm start" from frontend directory:
