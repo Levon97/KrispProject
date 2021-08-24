@@ -5,7 +5,13 @@ import { Button, Form, Badge } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 // registration component
 function Registration() {
-    const current = new Date().toISOString().split("T")[0];
+    const current = new Date();
+    current.setFullYear(current.getFullYear()-13);
+    const maxDate = current.toISOString().split("T")[0];
+    current.setFullYear(current.getFullYear()-150);
+    const minDate = current.toISOString().split("T")[0];
+    
+    
     const [inputField, setInputFieldVal] = useState({});
     const [disabledButton,setDisabledButton] = useState(false);
     const [registrationSucces, setSuccessfulReg] = useState(false);
@@ -77,7 +83,7 @@ function Registration() {
             </Form.Select>
             </Form.FloatingLabel>
             <Form.Group className="mb-3">
-                <Form.Control type="date" placeholder="Enter email" onChange = {(e) => changeHandler(e)} name = 'birth' />
+                <Form.Control type="date" placeholder="Enter email" onChange = {(e) => changeHandler(e)} name = 'birth' max={maxDate} min={minDate} />
             </Form.Group>
             <Button disabled = {disabledButton} onClick = {handleSubmit}>
                 Registration
@@ -90,6 +96,7 @@ function Registration() {
                 registrationSucces && <Redirect to='/login' />
             }
             </>
+
     )
 }
 
